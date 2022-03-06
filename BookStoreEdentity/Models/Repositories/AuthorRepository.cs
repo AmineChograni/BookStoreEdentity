@@ -13,8 +13,8 @@ namespace BookStoreEdentity.Models.Repositories
             authors = new List<Author>()
             {
                 new Author{Id = 1, FullName ="CHOGRANI Amine"},
-                new Author{Id = 1, FullName ="BOURKHA Hamza"},
-                new Author{Id = 1, FullName ="HILALI AbiZaid"},
+                new Author{Id = 2, FullName ="BOURKHA Hamza"},
+                new Author{Id = 3, FullName ="HILALI AbiZaid"},
             };
         }
 
@@ -31,7 +31,7 @@ namespace BookStoreEdentity.Models.Repositories
 
         public Author Find(int id)
         {
-            var author = authors.SingleOrDefault(b => b.Id == id);
+            var author = authors.SingleOrDefault(a => a.Id == id);
             return author;
         }
 
