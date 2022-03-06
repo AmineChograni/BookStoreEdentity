@@ -16,7 +16,8 @@ namespace BookStoreEdentity.Controllers
         // GET: AuthorController
         public ActionResult Index()
         {
-            return View();
+            var authors = authorRepository.List();
+            return View(authors);
         }
 
         // GET: AuthorController/Details/5
