@@ -11,9 +11,9 @@ namespace BookStoreEdentity.Models.Repositories
         {
             books = new List<Book>()
             {
-                new Book() { Id = 1, Title = "C#",Description ="No description"},
-                new Book() { Id = 2, Title = "Java",Description ="No Date"},
-                new Book() { Id = 3, Title = "PHP",Description ="No description"},
+                new Book() { Id = 1, Title = "C#",Description ="No description",Author=new Author{ Id =2  }},
+                new Book() { Id = 2, Title = "Java",Description ="No Date",Author=new Author()},
+                new Book() { Id = 3, Title = "PHP",Description ="No description",Author=new Author()},
             };
         }
         public void Add(Book entity)

@@ -1,5 +1,6 @@
 ﻿using BookStoreEdentity.Models;
 using BookStoreEdentity.Models.Repositories;
+using BookStoreEdentity.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,12 @@ namespace BookStoreEdentity.Controllers
     public class BookController : Controller
     {
         private readonly IBookStoreRepository<Book> bookRepository;
+        private readonly IBookStoreRepository<Author> authorRepository;
 
-        public BookController(IBookStoreRepository<Book> bookRepository)
+        public BookController(IBookStoreRepository<Book> bookRepository, IBookStoreRepository<Author> authorRepository)
         {
             this.bookRepository = bookRepository;
+            this.authorRepository = authorRepository;
         }
         // GET: BookController
         public ActionResult Index()
@@ -30,16 +33,31 @@ namespace BookStoreEdentity.Controllers
         // GET: BookController/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new BookAuthorViewModel
+            {
+                Authors=authorRepository.List()
+            };
+
+            return View(model);
         }
 
         // POST: BookController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(BookAuthorViewModel model)
         {
             try
             {
+                var author = authorRepository.Find(model.AuthorId);
+                Book book = new Book
+                {
+                    Id = model.BookId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    Author = author
+                };
+
+                bookRepository.Add(book);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -51,7 +69,19 @@ namespace BookStoreEdentity.Controllers
         // GET: BookController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var book=bookRepository.Find(id);
+
+            var authorId =book.Author == null?book.Author.Id=1:book.Author.Id;
+
+            var viewmodel = new BookAuthorViewModel
+            {
+                BookId = book.Id,
+                Title = book.Title,
+                Description = book.Description,
+                AuthorId = authorId,
+                Authors = authorRepository.List()
+            };
+            return View(viewmodel);
         }
 
         // POST: BookController/Edit/5
